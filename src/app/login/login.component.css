@@ -1,0 +1,11 @@
+.has-error label{
+    color: red;
+}
+
+.has-error input{
+    border-color: red;
+}
+
+.has-error span{
+    color: red;
+}
