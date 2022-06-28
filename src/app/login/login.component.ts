@@ -13,17 +13,17 @@ export class LoginComponent implements OnInit {
   loginDetails: LoginModel={
     id: 0,
     uid: 0,
-    email: "",
+    username: "",
     password: ""
   };
 
   formErrors = {
-    email: "",
+    username: "",
     password: ""
   };
 
   validationMessages = {
-    'email': {
+    'username': {
       'required': 'Email is required.',
     },
     'password': {
@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginDetail = this.fb.group({
-      email: ['', Validators.required],
+      username: ['', Validators.required],
       password: ['', Validators.required]
     })
   }
