@@ -9,7 +9,7 @@ import { LoginModel } from '../Models/LoginModel';
 })
 export class SignUpComponent implements OnInit {
   signupDetail!: FormGroup;
-  signupDetails: LoginModel={
+  signupDetails: LoginModel = {
     id: 0,
     uid: 0,
     username: "",
@@ -26,7 +26,7 @@ export class SignUpComponent implements OnInit {
       'required': 'Email is required.',
     },
     'password': {
-      'required': 'password is required'
+      'required': 'Password is required'
     }
   }
   constructor(private fb: FormBuilder) { }
@@ -59,8 +59,8 @@ export class SignUpComponent implements OnInit {
         // abstractFormControl?.disable();
       }
       if (abstractFormControl instanceof FormArray) {
-        for( const control of abstractFormControl.controls){
-          if(control instanceof FormGroup){
+        for (const control of abstractFormControl.controls) {
+          if (control instanceof FormGroup) {
             this.logValidationErrors(control)
           }
         }
@@ -68,14 +68,14 @@ export class SignUpComponent implements OnInit {
         // abstractFormControl?.disable();
       }
       // else {
-       
-        // abstractFormControl?.markAsDirty();
-        // console.log('Key = ' + key + ' Value = ' + abstractFormControl?.value);
+
+      // abstractFormControl?.markAsDirty();
+      // console.log('Key = ' + key + ' Value = ' + abstractFormControl?.value);
       // }
     });
   }
 
-  saveUser(){
+  saveUser() {
 
   }
 }

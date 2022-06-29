@@ -10,6 +10,8 @@ import { NotesComponent } from './notes/notes.component';
 import { MyNotesComponent } from './my-notes/my-notes.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { HttpClientModule } from '@angular/common/http'
+import { NotesService } from './Services/notes.service';
 
 @NgModule({
   declarations: [
@@ -25,8 +27,9 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [NotesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

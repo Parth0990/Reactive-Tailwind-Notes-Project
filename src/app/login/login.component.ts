@@ -24,10 +24,10 @@ export class LoginComponent implements OnInit {
 
   validationMessages = {
     'username': {
-      'required': 'Email is required.',
+      'required': 'Username is required.',
     },
     'password': {
-      'required': 'password is required'
+      'required': 'Password is required'
     }
   }
   constructor(private fb: FormBuilder) { }
