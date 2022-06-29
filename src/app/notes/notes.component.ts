@@ -13,7 +13,7 @@ export class NotesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  Submit(){
+  Submit() {
     this._router.navigate(['/allnotes']);
   }
 
