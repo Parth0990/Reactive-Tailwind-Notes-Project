@@ -1,7 +1,7 @@
 export class NotesModel {
     id: number = 0;
-    uid: number = 0;
-    noteid: number = 0;
+    uid: string = '';
+    noteid: string = '';
     title: string = "";
     description: string = "";
     modifyDate: string = "";
