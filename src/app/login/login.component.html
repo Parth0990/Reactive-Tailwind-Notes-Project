@@ -12,7 +12,7 @@
             <input id="username" (blur)="logValidationErrors()" (input)="logValidationErrors()" name="username" formControlName="username" type="username" autocomplete="username" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Username">
           </div>
           <span class="help-block"  *ngIf="formErrors.username">
-            Email is required
+            {{formErrors.username}}
           </span>
         </div>
         <div class="rounded-md shadow-sm -space-y-px" [ngClass]="{'has-error' : formErrors.password}">
@@ -21,7 +21,7 @@
           <input id="password" name="password"(blur)="logValidationErrors()" (input)="logValidationErrors()" formControlName="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password">
         </div>
         <span class="help-block"  *ngIf="formErrors.password">
-          Password is required
+          {{formErrors.password}}
         </span>
       </div>
   

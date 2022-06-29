@@ -26,7 +26,7 @@ export class SignUpComponent implements OnInit {
       'required': 'Email is required.',
     },
     'password': {
-      'required': 'password is required'
+      'required': 'Password is required'
     }
   }
   constructor(private fb: FormBuilder) { }
