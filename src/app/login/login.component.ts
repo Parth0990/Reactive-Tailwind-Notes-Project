@@ -93,6 +93,7 @@ export class LoginComponent implements OnInit {
   private success(data:LoginModel)
   {
     localStorage.setItem('uid',data.uid);
+    localStorage.setItem('username',data.username);
     this._router.navigate(['/home']);
   }
 
