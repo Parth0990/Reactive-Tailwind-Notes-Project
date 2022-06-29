@@ -5,7 +5,7 @@ import { NotesModel } from "../Models/notesModel";
 
 @Injectable()
 export class NotesService {
-    baseUrl = '';
+    baseUrl = 'https://localhost:44352/api/notes';
     constructor(private _httpClient: HttpClient) {}
 
     save(notes: NotesModel) : Observable<NotesModel> | null{
@@ -32,10 +32,17 @@ export class NotesService {
         }
       }
 
-    getNotes(id: number): Observable<NotesModel> {
+    // getNote(id: number): Observable<NotesModel> {
+    //     //return this.listEmployees.find(e => e.id === id);
+    //     return this._httpClient
+    //       .get<NotesModel>(`${this.baseUrl}` + "?")
+    //       .pipe(catchError(this.handleError));
+    //   }
+
+      getNotes(uid: string): Observable<NotesModel[]> {
         //return this.listEmployees.find(e => e.id === id);
         return this._httpClient
-          .get<NotesModel>(`${this.baseUrl}` + id)
+          .get<NotesModel[]>(`${this.baseUrl}`+"?uid="+uid)
           .pipe(catchError(this.handleError));
       }
       private handleError(errorResponse: HttpErrorResponse) {

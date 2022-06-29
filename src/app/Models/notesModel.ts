@@ -3,7 +3,7 @@ export class NotesModel {
     uid: string = '';
     noteid: string = '';
     title: string = "";
-    description: string = "";
+    note: string = "";
     modifyDate: string = "";
     createDate: string = "";
 }

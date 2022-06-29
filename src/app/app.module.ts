@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { HttpClientModule } from '@angular/common/http'
 import { NotesService } from './Services/notes.service';
+import { SingleNoteComponent } from './my-notes/single-note.component';
 
 @NgModule({
   declarations: [
@@ -22,11 +23,13 @@ import { NotesService } from './Services/notes.service';
     NotesComponent,
     MyNotesComponent,
     SignUpComponent,
+    SingleNoteComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     HttpClientModule
   ],
   providers: [NotesService],

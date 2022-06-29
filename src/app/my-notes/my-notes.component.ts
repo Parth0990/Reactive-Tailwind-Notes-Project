@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotesModel } from '../Models/notesModel';
+import { NotesService } from '../Services/notes.service';
 
 @Component({
   selector: 'app-my-notes',
@@ -9,24 +10,24 @@ import { NotesModel } from '../Models/notesModel';
 })
 export class MyNotesComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private _noteService: NotesService) { }
 
   notes: NotesModel[] = [{
     id: 0,
     uid: '',
     noteid: '',
     title: '',
-    description: "",
+    note: "",
     modifyDate: "",
     createDate: ''
   }]
 
   ngOnInit(): void {
+    this._noteService.getNotes("000112").subscribe((data)=>{
+      this.notes=data;
+      console.log(data);
+    })
   }
 
-  editNote(nid:string) {
-    this.router.navigate(['/addnotes', nid]);
-  }
-  deleteNote() { }
 
 }
