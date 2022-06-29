@@ -1,6 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 import { LoginModel } from '../Models/LoginModel';
+import { LoginService } from '../Services/login.service';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +16,7 @@ export class LoginComponent implements OnInit {
   loginDetail!: FormGroup;
   loginDetails: LoginModel={
     id: 0,
-    uid: 0,
+    uid: "",
     username: "",
     password: ""
   };
@@ -25,17 +29,27 @@ export class LoginComponent implements OnInit {
   validationMessages = {
     'username': {
       'required': 'Username is required.',
+      'invalid' : 'Invalid Username'
     },
     'password': {
-      'required': 'Password is required'
+      'required': 'Password is required',
+      'invalid':'Wrong Password'
     }
   }
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private _loginService:LoginService,private _router:Router) { }
 
   ngOnInit(): void {
     this.loginDetail = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
+    });
+
+    this.loginDetail.get('password')?.valueChanges.subscribe((value : string) => {
+      this.loginDetails.password=value;
+    })
+
+    this.loginDetail.get('username')?.valueChanges.subscribe((value : string) => {
+      this.loginDetails.username=value;
     })
   }
 
@@ -47,7 +61,6 @@ export class LoginComponent implements OnInit {
       if ((abstractFormControl && !abstractFormControl.valid) && (abstractFormControl.touched || abstractFormControl.dirty)) {
         const messages = (this.validationMessages as any)[key];
         console.log(abstractFormControl.errors);
-        // console.log(abstractFormControl.errors);
         for (const errorkey in abstractFormControl.errors) {
           if (errorkey) {
             (this.formErrors as any)[key] += messages[errorkey] + ' ';
@@ -57,7 +70,6 @@ export class LoginComponent implements OnInit {
 
       if (abstractFormControl instanceof FormGroup) {
         this.logValidationErrors(abstractFormControl);
-        // abstractFormControl?.disable();
       }
       if (abstractFormControl instanceof FormArray) {
         for( const control of abstractFormControl.controls){
@@ -65,18 +77,37 @@ export class LoginComponent implements OnInit {
             this.logValidationErrors(control)
           }
         }
-        // this.logValidationErrors(abstractFormControl);
-        // abstractFormControl?.disable();
+
       }
-      // else {
-       
-        // abstractFormControl?.markAsDirty();
-        // console.log('Key = ' + key + ' Value = ' + abstractFormControl?.value);
-      // }
+
     });
   }
 
   saveUser(){
-
+    console.log(this.loginDetails);
+    this._loginService.loginUser(this.loginDetails).pipe(catchError(this.handleError.bind(this))).subscribe(
+      (data)=>this.success(data)
+    );
   }
+
+  private success(data:LoginModel)
+  {
+    localStorage.setItem('uid',data.uid);
+    this._router.navigate(['/home']);
+  }
+
+  handleError(errorResponse: HttpErrorResponse) {
+    if(errorResponse.status==404)
+    {
+      this.formErrors.username='Invalid Username';
+      console.log('Invalid Username');
+    }
+    if(errorResponse.status==401){
+      this.formErrors.password='Invalid Password';
+      console.log('Invalid Password');
+    }
+
+    return throwError(() => new Error('there is a problem with the service.'));
+  }
+  
 }

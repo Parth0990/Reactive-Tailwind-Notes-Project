@@ -23,7 +23,7 @@ export class MyNotesComponent implements OnInit {
   }]
 
   ngOnInit(): void {
-    this._noteService.getNotes("000112").subscribe((data)=>{
+    this._noteService.getNotes(localStorage.getItem('uid')||"abc").subscribe((data)=>{
       this.notes=data;
       console.log(data);
     })

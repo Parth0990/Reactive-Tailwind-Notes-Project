@@ -11,7 +11,7 @@ export class SignUpComponent implements OnInit {
   signupDetail!: FormGroup;
   signupDetails: LoginModel = {
     id: 0,
-    uid: 0,
+    uid: "",
     username: "",
     password: ""
   };

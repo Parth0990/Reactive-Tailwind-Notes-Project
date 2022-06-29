@@ -13,6 +13,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { HttpClientModule } from '@angular/common/http'
 import { NotesService } from './Services/notes.service';
 import { SingleNoteComponent } from './my-notes/single-note.component';
+import { LoginService } from './Services/login.service';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { SingleNoteComponent } from './my-notes/single-note.component';
     FormsModule,
     HttpClientModule
   ],
-  providers: [NotesService],
+  providers: [NotesService,LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
