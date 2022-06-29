@@ -1,3 +1,10 @@
-<div class=" grid grid-cols-3" >
-  <div class="flex "> <app-single-note [snote]="note" *ngFor="let note of notes" ></app-single-note> </div>
+<!-- TODO DESIGN NO NOTES PART -->
+
+<div class="container" *ngIf="isEmpty">
+  No NOtes Exist
+  <a href="addnotes/new">Add New Note</a>
+</div>
+
+<div class=" grid grid-cols-3" *ngIf="!isEmpty">
+  <div class="flex "> <app-single-note (onNoteDeleteEvent)="deleteEvent($event)" [snote]="note" *ngFor="let note of notes" ></app-single-note> </div>
 </div>

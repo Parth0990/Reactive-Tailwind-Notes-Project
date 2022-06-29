@@ -1,5 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 import { NotesModel } from '../Models/notesModel';
 import { NotesService } from '../Services/notes.service';
 
@@ -22,11 +24,34 @@ export class MyNotesComponent implements OnInit {
     createDate: ''
   }]
 
-  ngOnInit(): void {
-    this._noteService.getNotes(localStorage.getItem('uid')||"abc").subscribe((data)=>{
+
+  deleteEvent(d:string)
+  {
+    console.log('called');
+    this._noteService.getNotes(localStorage.getItem('uid')||"").pipe(catchError(this.handleError.bind(this))).subscribe((data)=>{
       this.notes=data;
       console.log(data);
     })
+  }
+
+  ngOnInit(): void {
+    this._noteService.getNotes(localStorage.getItem('uid')||"").pipe(catchError(this.handleError.bind(this))).subscribe((data)=>{
+      this.notes=data;
+      console.log(data);
+    })
+  }
+
+  isEmpty:boolean=false;
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if(errorResponse.status==404)
+    {
+      this.isEmpty=true;
+      this.notes.splice(1);
+      //console.log(this.isEmpty);
+      
+    }
+    return throwError(() => new Error('there is a problem with the service.'));
   }
 
 

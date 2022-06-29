@@ -10,7 +10,7 @@ import { NotesService } from '../Services/notes.service';
 })
 export class NotesComponent implements OnInit {
 
-  constructor(private _router: Router, private _route: ActivatedRoute , private noteService: NotesService) { }
+  constructor(private _router: Router, private _route: ActivatedRoute , private _noteService: NotesService) { }
 
   ngOnInit(): void {
     this._route.paramMap.subscribe((parameterMap) => {
@@ -38,7 +38,7 @@ export class NotesComponent implements OnInit {
     } else {
       this.panelTitle = 'Edit Note';
       //this.employee = Object.assign({}, this._employeeService.getEmployee(id));
-      this.noteService.getNotes("000112").subscribe((data) => {
+      this._noteService.getNotes(localStorage.getItem('uid')||"").subscribe((data) => {
         this.note = data.filter((e)=>nid==e.noteid)[0];
         console.log(this.note);
       });
@@ -47,9 +47,11 @@ export class NotesComponent implements OnInit {
 
   saveNote()
   {
+    
     console.log(this.note);
-
-    // TODO 1. GEt UID from local storage. 2. Generate note ID 3. Call post service
+    this._noteService.save(this.note)?.subscribe((data)=>{
+      this._router.navigate(['/home']);
+    })
   }
 
   Submit(){

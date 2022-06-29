@@ -10,21 +10,16 @@ export class NotesService {
 
     save(notes: NotesModel) : Observable<NotesModel> | null{
         if (notes.id === 0) {
+          notes.noteid="n"+Math.floor(Math.random()*100000+1);
+          notes.uid=localStorage.getItem('uid')||"";
           return this._httpClient.post<NotesModel>(`${this.baseUrl}`, notes , {
             headers: new HttpHeaders({
               'Content-Type': 'application/json'
             })
           }).pipe(catchError(this.handleError));
-          // this.listEmployees.push(employee);
-          // console.log(employee);
         } 
-        // return null;
         else {
-          // const foundIndex = this.listEmployees.findIndex(
-          //   (e) => e.id === employee.id
-          // );
-          // this.listEmployees[foundIndex] = employee;
-          return this._httpClient.put<NotesModel>(`${this.baseUrl}`+notes.id,notes,{
+          return this._httpClient.put<NotesModel>(`${this.baseUrl}`+"?noteid="+notes.noteid,notes,{
             headers: new HttpHeaders({
               'Content-Type': 'application/json'
             })
@@ -32,19 +27,20 @@ export class NotesService {
         }
       }
 
-    // getNote(id: number): Observable<NotesModel> {
-    //     //return this.listEmployees.find(e => e.id === id);
-    //     return this._httpClient
-    //       .get<NotesModel>(`${this.baseUrl}` + "?")
-    //       .pipe(catchError(this.handleError));
-    //   }
-
       getNotes(uid: string): Observable<NotesModel[]> {
         //return this.listEmployees.find(e => e.id === id);
         return this._httpClient
-          .get<NotesModel[]>(`${this.baseUrl}`+"?uid="+uid)
-          .pipe(catchError(this.handleError));
+          .get<NotesModel[]>(`${this.baseUrl}`+"?uid="+uid);
       }
+
+      deleteNotes(noteid: string) {
+        return this._httpClient.delete(`${this.baseUrl}`+"?noteid="+noteid,{
+          headers: new HttpHeaders({
+            'Content-Type': 'application/json'
+          })
+        });
+      }
+
       private handleError(errorResponse: HttpErrorResponse) {
         if (errorResponse.error instanceof ErrorEvent) {
           console.error('Client Side Error ', errorResponse.error.message);
