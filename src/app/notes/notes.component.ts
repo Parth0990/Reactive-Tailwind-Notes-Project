@@ -33,10 +33,10 @@ export class NotesComponent implements OnInit {
         modifyDate: "",
         createDate: ''
       };
-      this.panelTitle = 'Create Employee';
+      this.panelTitle = 'Add Note';
       // this.createEmployeeForm.reset();
     } else {
-      this.panelTitle = 'Edit Employee';
+      this.panelTitle = 'Edit Note';
       //this.employee = Object.assign({}, this._employeeService.getEmployee(id));
       this.noteService.getNotes(id).subscribe((data) => {
         this.note = data;
