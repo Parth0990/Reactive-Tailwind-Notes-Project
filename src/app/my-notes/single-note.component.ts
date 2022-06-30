@@ -18,6 +18,10 @@ export class SingleNoteComponent implements OnInit {
   @Output()
   onNoteDeleteEvent: EventEmitter<string> = new EventEmitter<string>();
 
+  @Input() isEmpty!:boolean;
+
+  @Input() allnotes!:NotesModel[];
+
   @Input() snote!:NotesModel;
 
   editNote(nid:string) {

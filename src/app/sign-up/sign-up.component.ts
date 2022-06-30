@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoginModel } from '../Models/LoginModel';
 
 @Component({
@@ -29,7 +30,13 @@ export class SignUpComponent implements OnInit {
       'required': 'Password is required'
     }
   }
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder,private _router:Router) {
+    if(localStorage.getItem('uid')!=null)
+    {
+      localStorage.clear();
+      _router.navigate(['/login']);
+    }
+   }
 
   ngOnInit(): void {
     this.signupDetail = this.fb.group({

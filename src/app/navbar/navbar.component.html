@@ -96,6 +96,12 @@
             >
           </div>
         </div>
+
+        <div class="flex-shrink-0 flex items-center absolute inset-y-0 right-0 w-16" *ngIf="readLocalStorageValue('username')">
+          <!-- <img class="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow">
+            <img class="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow"> -->
+          <h3 class="text-white font-bold text-xl">Hello, {{readLocalStorageValue('username')}}</h3>
+        </div>
       </div>
       <div
         class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0"

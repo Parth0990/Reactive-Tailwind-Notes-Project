@@ -12,7 +12,12 @@ import { NotesService } from '../Services/notes.service';
 })
 export class MyNotesComponent implements OnInit {
 
-  constructor(private router: Router, private _noteService: NotesService) { }
+  constructor(private router: Router, private _noteService: NotesService) {
+    if(localStorage.getItem('uid')==null)
+    {
+      router.navigate(['/login']);
+    }
+   }
 
   notes: NotesModel[] = [{
     id: 0,

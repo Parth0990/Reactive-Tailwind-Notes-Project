@@ -10,7 +10,12 @@ import { NotesService } from '../Services/notes.service';
 })
 export class NotesComponent implements OnInit {
 
-  constructor(private _router: Router, private _route: ActivatedRoute , private _noteService: NotesService) { }
+  constructor(private _router: Router, private _route: ActivatedRoute , private _noteService: NotesService) { 
+    if(localStorage.getItem('uid')==null)
+    {
+      _router.navigate(['/login']);
+    }
+  }
 
   ngOnInit(): void {
     this._route.paramMap.subscribe((parameterMap) => {

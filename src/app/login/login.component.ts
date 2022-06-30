@@ -36,7 +36,13 @@ export class LoginComponent implements OnInit {
       'invalid':'Wrong Password'
     }
   }
-  constructor(private fb: FormBuilder, private _loginService:LoginService,private _router:Router) { }
+
+  constructor(private fb: FormBuilder, private _loginService:LoginService,private _router:Router) {
+    if(localStorage.getItem('uid')!=null)
+    {
+      _router.navigate(['/home']);
+    }
+   }
 
   ngOnInit(): void {
     this.loginDetail = this.fb.group({
