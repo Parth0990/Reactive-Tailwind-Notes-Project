@@ -95,7 +95,7 @@ export class SignUpComponent implements OnInit {
 
   saveUser() {
     let index=this.signupDetails.username.lastIndexOf('@');
-    this.signupDetails.username=this.signupDetails.username.substring(0,index);
+    this.signupDetails.username=this.signupDetails.username.substring(0,index).toLowerCase();
     this.signupDetails.uid=Math.floor(Math.random()*100000+1).toString();
     console.log(this.signupDetails);
     this._signupService.addUser(this.signupDetails).pipe(catchError(this.handleError.bind(this))).subscribe((data)=>{
