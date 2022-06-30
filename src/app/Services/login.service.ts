@@ -26,4 +26,8 @@ export class LoginService {
             })
           });
     }
+
+    lastUserId(){
+      return this._httpClient.get<string>(this.baseUrl);
+    }
 }

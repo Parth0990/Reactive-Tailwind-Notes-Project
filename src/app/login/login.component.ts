@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 import { LoginModel } from '../Models/LoginModel';
 import { LoginService } from '../Services/login.service';
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-login',
@@ -92,7 +93,15 @@ export class LoginComponent implements OnInit {
   saveUser(){
     console.log(this.loginDetails);
     this._loginService.loginUser(this.loginDetails).pipe(catchError(this.handleError.bind(this))).subscribe(
-      (data)=>this.success(data)
+      (data)=>{
+        const abc=bcrypt.compareSync(this.loginDetails.password,data.password);
+        if(abc){
+          this.success(data);
+        }
+        else{
+          this.formErrors.password='Invalid Password';
+        }
+      }
     );
   }
 

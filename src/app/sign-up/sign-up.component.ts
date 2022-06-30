@@ -2,9 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { catchError, throwError } from 'rxjs';
+import { catchError, count, range, throwError } from 'rxjs';
 import { LoginModel } from '../Models/LoginModel';
+import { LoginService } from '../Services/login.service';
 import { SignUpService } from '../Services/signup.service';
+import * as bcrypt from 'bcryptjs';
 
 @Component({
   selector: 'app-sign-up',
@@ -25,6 +27,8 @@ export class SignUpComponent implements OnInit {
     password: ""
   };
 
+ 
+
   validationMessages = {
     'username': {
       'required': 'Email is required.',
@@ -34,7 +38,7 @@ export class SignUpComponent implements OnInit {
       'required': 'Password is required'
     }
   }
-  constructor(private fb: FormBuilder,private _router:Router,private _signupService:SignUpService) {
+  constructor(private fb: FormBuilder,private _router:Router,private _signupService:SignUpService,private _loginService:LoginService) {
     if(localStorage.getItem('uid')!=null)
     {
       localStorage.clear();
@@ -42,7 +46,6 @@ export class SignUpComponent implements OnInit {
     }
    }
 
-   
 
   ngOnInit(): void {
     this.signupDetail = this.fb.group({
@@ -54,6 +57,8 @@ export class SignUpComponent implements OnInit {
       this.signupDetails.username=this.signupDetail.get('username')?.value
       this.signupDetails.password=this.signupDetail.get('password')?.value
     })
+    
+   
   }
 
   logValidationErrors(group: FormGroup = this.signupDetail): void {
@@ -92,17 +97,33 @@ export class SignUpComponent implements OnInit {
       // }
     });
   }
+lastUid:string="";
 
   saveUser() {
     let index=this.signupDetails.username.lastIndexOf('@');
+    const salt = bcrypt.genSaltSync(10);
+    const pass = bcrypt.hashSync(this.signupDetails.password, salt);
+    this.signupDetails.password = pass;
     this.signupDetails.username=this.signupDetails.username.substring(0,index).toLowerCase();
-    this.signupDetails.uid=Math.floor(Math.random()*100000+1).toString();
+    //this.signupDetails.uid="000"+Math.floor(Math.random()*100+1);
+    this._loginService.lastUserId().subscribe((data) => {
+    this.lastUid=data;
+    let endId=(+this.lastUid.substring(3,6))+1;
+    this.signupDetails.uid="000"+endId;
     console.log(this.signupDetails);
     this._signupService.addUser(this.signupDetails).pipe(catchError(this.handleError.bind(this))).subscribe((data)=>{
       console.log(data);
       this._router.navigate(['/login']);
     });
+    });
+    
+    // this.signupDetails.uid=Math.floor(Math.random()*100000+1).toString();
+    //this.signupDetails.uid = Math.floor(Math.random()*4).toString();
+    
+    
   }
+
+
 
 
   alreadyExist:boolean=false;
