@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http'
 import { NotesService } from './Services/notes.service';
 import { SingleNoteComponent } from './my-notes/single-note.component';
 import { LoginService } from './Services/login.service';
+import { SignUpService } from './Services/signup.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { LoginService } from './Services/login.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [NotesService,LoginService],
+  providers: [NotesService,LoginService,SignUpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

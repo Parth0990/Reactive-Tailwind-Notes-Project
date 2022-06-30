@@ -1,7 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 import { LoginModel } from '../Models/LoginModel';
+import { SignUpService } from '../Services/signup.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -25,12 +28,13 @@ export class SignUpComponent implements OnInit {
   validationMessages = {
     'username': {
       'required': 'Email is required.',
+      'pattern':'Email is invalid'
     },
     'password': {
       'required': 'Password is required'
     }
   }
-  constructor(private fb: FormBuilder,private _router:Router) {
+  constructor(private fb: FormBuilder,private _router:Router,private _signupService:SignUpService) {
     if(localStorage.getItem('uid')!=null)
     {
       localStorage.clear();
@@ -38,10 +42,17 @@ export class SignUpComponent implements OnInit {
     }
    }
 
+   
+
   ngOnInit(): void {
     this.signupDetail = this.fb.group({
-      username: ['', Validators.required],
+      username: ['',[ Validators.required,Validators.pattern('^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$')]],
       password: ['', Validators.required]
+    })
+
+    this.signupDetail.valueChanges.subscribe((data)=>{
+      this.signupDetails.username=this.signupDetail.get('username')?.value
+      this.signupDetails.password=this.signupDetail.get('password')?.value
     })
   }
 
@@ -52,7 +63,7 @@ export class SignUpComponent implements OnInit {
       (this.formErrors as any)[key] = '';
       if ((abstractFormControl && !abstractFormControl.valid) && (abstractFormControl.touched || abstractFormControl.dirty)) {
         const messages = (this.validationMessages as any)[key];
-        console.log(abstractFormControl.errors);
+       // console.log(abstractFormControl.errors);
         // console.log(abstractFormControl.errors);
         for (const errorkey in abstractFormControl.errors) {
           if (errorkey) {
@@ -83,6 +94,25 @@ export class SignUpComponent implements OnInit {
   }
 
   saveUser() {
+    let index=this.signupDetails.username.lastIndexOf('@');
+    this.signupDetails.username=this.signupDetails.username.substring(0,index);
+    this.signupDetails.uid=Math.floor(Math.random()*100000+1).toString();
+    console.log(this.signupDetails);
+    this._signupService.addUser(this.signupDetails).pipe(catchError(this.handleError.bind(this))).subscribe((data)=>{
+      console.log(data);
+      this._router.navigate(['/login']);
+    });
+  }
 
+
+  alreadyExist:boolean=false;
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if(errorResponse.status==417)
+    {
+      this.alreadyExist=true;
+      this.formErrors.username="User Already Exist";
+    }
+    return throwError(() => new Error('there is a problem with the service.'));
   }
 }
